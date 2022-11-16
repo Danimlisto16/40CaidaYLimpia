@@ -1,3 +1,5 @@
+from card import Card
+
 class Player:
     def __init__(self, playerNumber,name, score, playerCards,listSavedCards):
       self.__playerNumber = playerNumber
@@ -40,8 +42,27 @@ class Player:
         self.__listSavedCards = listSavedCards
         
         
-        
+    def showCards(self):
+        iterator = 0
+        for card in self.playerCards:
+          iterator = iterator + 1
+          print(f'{iterator}) {card.get_number()} {card.get_symbol()}')
         
     def __str__(self):
-      return f'|  #{self.playerNumber}) |{self.name}| score: {self.score}'
+      return f'|  #{self.__playerNumber}) |{self.__name}| score: {self.__score}'
       
+      
+    def chooseCard(self):
+        cardsLen = len(self.playerCards)
+        print(f"\nYou have {cardsLen}  card(s)\n")
+        while(True):
+            try:
+                opt = int(input(f"\nPlayer {self.__playerNumber}) |{self.__name}| choose a card (1-{cardsLen}) : "))
+                if opt <= cardsLen and opt >= 1:
+                    break
+            except:
+                print("An exception occurred")
+        opt = opt-1
+        card = Card(self.playerCards[opt].get_symbol(),self.playerCards[opt].get_number())
+        del(self.playerCards[opt])
+        return card

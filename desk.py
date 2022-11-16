@@ -22,7 +22,7 @@ class Desk:
     def caida(self):
         cardsQtty = len(self.listCards)
         if(cardsQtty > 1):
-            if self.listCards[cardsQtty-1].number == self.listCards[cardsQtty-2].number:
+            if self.listCards[cardsQtty-1].get_number() == self.listCards[cardsQtty-2].get_number():
                 
                     #check if there is any higher card or continue
                 
@@ -31,7 +31,7 @@ class Desk:
                 print("==================================")
                 print("||             CAIDA            ||")
                 print("==================================")
-                self.playerTurn.score = self.playerTurn.score + 2
+                self.playerTurn.set_score(self.playerTurn.get_score() + 2)
                 print(f'\nPlayer: {self.playerTurn.get_name()}  Score: {self.playerTurn.get_score()}')
             
         

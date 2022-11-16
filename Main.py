@@ -3,6 +3,7 @@
 #
 #imports
 import random
+import os
 
 #modules
 from card import Card
@@ -18,22 +19,7 @@ def shareCards(listCards,qty):
     del(listCards[:qty])
     return playerCards
 
-def chooseCard(player):
 
-    cardsLen = len(player.playerCards)
-    print(f"\nYou have {cardsLen}  card(s)\n")
-    while(True):
-        try:
-            opt = int(input(f"\nPlayer {player.playerNumber} choose a card (1-{cardsLen}) : "))
-            if opt <= cardsLen and opt >= 1:
-                break
-        except:
-            print("An exception occurred")
-    opt = opt-1
-    card = Card(player.playerCards[opt].symbol,player.playerCards[opt].number)
-    print(player.playerCards[opt])
-    del(player.playerCards[opt])
-    return card
 
 
     
@@ -113,7 +99,7 @@ print("==================================\n\n\n")
 
 #opt = int(input("WOULD YOU LIKE TO PLAY VS MACHINE OR VS FRIENDs? (1-2)"))
 
-print("=======PLAYER 1 vs PLAYER 2=====\n")
+print("======= PLAYER 1 vs PLAYER 2=====\n")
     #create desk
 
 
@@ -137,29 +123,35 @@ player1.playerCards  =  shareCards(listCards,cardsQty)
 player2.playerCards  =  shareCards(listCards,cardsQty)
 
 while(len(player2.playerCards) > 0):
+    #clean screen
+    os.system('clear')
     #player 1 turn 
+    
+    desk.playerTurn = player1
+    desk.showDeskCards()
     print("\n[= " + player1.get_name() + " CARDS =]")
-    desk.playerTurn(player1)
-    showPlayerCards(player1.playerCards)
-    desk.listCards.append(chooseCard(player1))
-    desk.caida()
-    desk.showDeskCards()
+    player1.showCards()
+    desk.listCards.append(player1.chooseCard())
+    desk.caida() #detect event
     
     
     
+    os.system('clear')
     #player 2 turn 
-    print("\n[= " + player2.get_name() + " CARDS =]")
     
-    desk.playerTurn(player2)
-    showPlayerCards(player2.playerCards)
-    desk.listCards.append(chooseCard(player2))
-    desk.caida()
+    
+    desk.playerTurn = player2
     desk.showDeskCards()
+    print("\n[= " + player2.get_name() + " CARDS =]")
+    player2.showCards()
+    desk.listCards.append(player2.chooseCard())
+    desk.caida()
+    
+    
     
     
     #analyze combinations   
-    print(len(listCards))
-
+desk.showDeskCards()
 
 
 
