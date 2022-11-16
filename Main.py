@@ -3,7 +3,7 @@
 #
 #imports
 import random
-
+from pprint import pprint  # no install required
 from card import Card
 from desk import Desk
 from kindSymbol import kindSymbol as ks
@@ -17,7 +17,35 @@ def shareCards(listCards,qty):
     del(listCards[:qty])
     return playerCards
 
-cardsOnDesk = []
+def chooseCard(player):
+    
+    cardsLen = len(player.playerCards)
+    print(f"\nYou have {cardsLen}  card(s)\n")
+    opt = int(input(f"Player {player.playerNumber} choose a card (1-{cardsLen}) : "))
+    opt = opt-1
+    card = Card(player.playerCards[opt].symbol,player.playerCards[opt].number)
+    print(player.playerCards[opt])
+    del(player.playerCards[opt])
+    return card
+
+
+    
+def showDeskCards(cardsOnDesk):
+    print("========CARDS ON DESK =========")
+    print("||                             ||")
+    print("||                             ||")
+    print(*cardsOnDesk,sep = "\n")
+    print("||                             ||")
+    print("||                             ||")
+    print("===============================")
+    
+def showPlayerCards(playerCards):
+    iterator = 0
+    for card in playerCards:
+        iterator = iterator + 1
+        print(f'{iterator}) {card.symbol} {card.number}')
+    
+
 cardsQty = 5
 player1Cards = []
 player2Cards = []
@@ -87,13 +115,13 @@ print("==================================\n\n\n")
 
 print("=======PLAYER 1 vs PLAYER 2=====\n")
     #create desk
-desk = Desk(cardsOnDesk,True,1)
+desk = Desk([],True,1)
 
 #create players
 print("================================================")
-player1 = Player(1,input("Player 1 write your name: "),0,player1Cards)
+player1 = Player(1,input("Player 1 write your name: "),0,player1Cards,[])
 print("================================================\n")
-player2 = Player(2,input("Player 2 write your name: "),0,player2Cards)
+player2 = Player(2,input("Player 2 write your name: "),0,player2Cards,[])
 print("================================================\n\n")
 print("Players, get READY!!!.../n/n")
 print("====" + player1.name + " VS "+ player2.name +"====" )
@@ -102,24 +130,26 @@ print("====" + player1.name + " VS "+ player2.name +"====" )
 print("Would you like to play  2 or  4?")
 
 #share cards
-player1Cards = shareCards(listCards,cardsQty)
-player2Cards = shareCards(listCards,cardsQty)
+player1.playerCards  =  shareCards(listCards,cardsQty)
+player2.playerCards  =  shareCards(listCards,cardsQty)
 
-print("\n--------" + player1.name + " CARDS")
-print(*player1Cards,sep = '\n')
-
-print("\n--------" + player2.name + " CARDS")
-print(*player2Cards,sep = '\n')
-
-print("♠ ♦ ♣ ♡")
-
-#player 1 turn 
-print("Choose a card: ")
-
-#player 2 turn 
-#analyze combinations
-
-print(len(listCards))
+while(len(player2.playerCards) > 0):
+    
+    
+    #player 1 turn 
+    print("\n--------" + player1.name + " CARDS")
+    showPlayerCards(player1.playerCards)
+    desk.listCards.append(chooseCard(player1))
+    showDeskCards(desk.listCards)
+    
+    #player 2 turn 
+    print("\n--------" + player2.name + " CARDS")
+    showPlayerCards(player2.playerCards)
+    desk.listCards.append(chooseCard(player2))
+    showDeskCards(desk.listCards)
+    
+    #analyze combinations   
+    print(len(listCards))
 
 
 
