@@ -3,7 +3,8 @@
 #
 #imports
 import random
-from pprint import pprint  # no install required
+
+#modules
 from card import Card
 from desk import Desk
 from kindSymbol import kindSymbol as ks
@@ -21,7 +22,13 @@ def chooseCard(player):
 
     cardsLen = len(player.playerCards)
     print(f"\nYou have {cardsLen}  card(s)\n")
-    opt = int(input(f"Player {player.playerNumber} choose a card (1-{cardsLen}) : "))
+    while(True):
+        try:
+            opt = int(input(f"\nPlayer {player.playerNumber} choose a card (1-{cardsLen}) : "))
+            if opt <= cardsLen and opt >= 1:
+                break
+        except:
+            print("An exception occurred")
     opt = opt-1
     card = Card(player.playerCards[opt].symbol,player.playerCards[opt].number)
     print(player.playerCards[opt])
@@ -30,20 +37,13 @@ def chooseCard(player):
 
 
     
-def showDeskCards(cardsOnDesk):
-    print("========CARDS ON DESK =========")
-    print("||                             ||")
-    print("||                             ||")
-    print(*cardsOnDesk,sep = "\n")
-    print("||                             ||")
-    print("||                             ||")
-    print("===============================")
+
     
 def showPlayerCards(playerCards):
     iterator = 0
     for card in playerCards:
         iterator = iterator + 1
-        print(f'{iterator}) {card.symbol} {card.number}')
+        print(f'{iterator}) {card.number} {card.symbol}')
     
 
 cardsQty = 5
@@ -115,7 +115,7 @@ print("==================================\n\n\n")
 
 print("=======PLAYER 1 vs PLAYER 2=====\n")
     #create desk
-desk = Desk([],True,1)
+
 
 #create players
 print("================================================")
@@ -123,30 +123,39 @@ player1 = Player(1,input("Player 1 write your name: "),0,player1Cards,[])
 print("================================================\n")
 player2 = Player(2,input("Player 2 write your name: "),0,player2Cards,[])
 print("================================================\n\n")
-print("Players, get READY!!!.../n/n")
-print("====" + player1.name + " VS "+ player2.name +"====" )
+print("Players, get READY!!!...\n\n")
+print("====" + player1.get_name() + " VS "+ player2.get_name() +"====" )
 
 #define rules
-print("Would you like to play  2 or  4?")
+desk = Desk([],True,player1,[player1,player2]) #refact
+#ALL (2)
+#NORMAL (COUNT CAIDA AND LIMPIA) (4)
+
 
 #share cards
 player1.playerCards  =  shareCards(listCards,cardsQty)
 player2.playerCards  =  shareCards(listCards,cardsQty)
 
 while(len(player2.playerCards) > 0):
-    
-    
     #player 1 turn 
-    print("\n--------" + player1.name + " CARDS")
+    print("\n[= " + player1.get_name() + " CARDS =]")
+    desk.playerTurn(player1)
     showPlayerCards(player1.playerCards)
     desk.listCards.append(chooseCard(player1))
-    showDeskCards(desk.listCards)
+    desk.caida()
+    desk.showDeskCards()
+    
+    
     
     #player 2 turn 
-    print("\n--------" + player2.name + " CARDS")
+    print("\n[= " + player2.get_name() + " CARDS =]")
+    
+    desk.playerTurn(player2)
     showPlayerCards(player2.playerCards)
     desk.listCards.append(chooseCard(player2))
-    showDeskCards(desk.listCards)
+    desk.caida()
+    desk.showDeskCards()
+    
     
     #analyze combinations   
     print(len(listCards))
