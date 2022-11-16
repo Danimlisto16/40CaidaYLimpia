@@ -18,7 +18,7 @@ def shareCards(listCards,qty):
     return playerCards
 
 def chooseCard(player):
-    
+
     cardsLen = len(player.playerCards)
     print(f"\nYou have {cardsLen}  card(s)\n")
     opt = int(input(f"Player {player.playerNumber} choose a card (1-{cardsLen}) : "))
