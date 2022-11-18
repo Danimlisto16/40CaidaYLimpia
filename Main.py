@@ -19,17 +19,6 @@ def shareCards(listCards,qty):
     del(listCards[:qty])
     return playerCards
 
-
-
-
-    
-
-    
-def showPlayerCards(playerCards):
-    iterator = 0
-    for card in playerCards:
-        iterator = iterator + 1
-        print(f'{iterator}) {card.number} {card.symbol}')
     
 
 cardsQty = 5
@@ -127,11 +116,11 @@ while(len(player2.playerCards) > 0):
     os.system('clear')
     #player 1 turn 
     
-    desk.playerTurn = player1
+    desk.set_playerTurn(player1)
     desk.showDeskCards()
     print("\n[= " + player1.get_name() + " CARDS =]")
     player1.showCards()
-    desk.listCards.append(player1.chooseCard())
+    desk.get_listCards().append(player1.chooseCard()) #when is a list you need to get it and append it
     desk.caida() #detect event
     
     
@@ -140,11 +129,11 @@ while(len(player2.playerCards) > 0):
     #player 2 turn 
     
     
-    desk.playerTurn = player2
+    desk.set_playerTurn(player2)
     desk.showDeskCards()
     print("\n[= " + player2.get_name() + " CARDS =]")
     player2.showCards()
-    desk.listCards.append(player2.chooseCard())
+    desk.get_listCards().append(player2.chooseCard())
     desk.caida()
     
     
