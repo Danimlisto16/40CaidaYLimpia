@@ -21,6 +21,7 @@ def shareCards(listCards,qty):
 
     
 
+
 cardsQty = 5
 player1Cards = []
 player2Cards = []
@@ -102,7 +103,7 @@ print("Players, get READY!!!...\n\n")
 print("====" + player1.get_name() + " VS "+ player2.get_name() +"====" )
 
 #define rules
-desk = Desk([],True,player1,[player1,player2]) #refact
+desk = Desk("",True,player1,[player1,player2],"") #refact
 #ALL (2)
 #NORMAL (COUNT CAIDA AND LIMPIA) (4)
 
@@ -111,34 +112,42 @@ desk = Desk([],True,player1,[player1,player2]) #refact
 player1.playerCards  =  shareCards(listCards,cardsQty)
 player2.playerCards  =  shareCards(listCards,cardsQty)
 
-while(len(player2.playerCards) > 0):
-    #clean screen
-    os.system('clear')
-    #player 1 turn 
+while(player1.get_score() != 40 and player2.get_score() != 40):
+    turns = 1
+    while(turns < 5):
+        
+        #================= REFACTORIZAR ==============
+        #clean screen
+        os.system('clear')
+        #player 1 turn 
+        
+        desk.set_playerTurn(player1)
+        desk.showDeskCards()
+        print("\n[= " + player1.get_name() + " CARDS =]")
+        player1.showCards()
+        cardChoosen = player1.chooseCard()
+        desk.set_lastCard(cardChoosen)
+        desk.caida(cardChoosen) #detect event
+        
+        
+        
+        os.system('clear')
+        #player 2 turn 
+        
+        
+        desk.set_playerTurn(player2)
+        desk.showDeskCards()
+        print("\n[= " + player2.get_name() + " CARDS =]")
+        cardChoosen = player2.chooseCard()
+        desk.set_lastCard(cardChoosen)
+        desk.caida(cardChoosen) #detect event
+        turns+=1
     
-    desk.set_playerTurn(player1)
-    desk.showDeskCards()
-    print("\n[= " + player1.get_name() + " CARDS =]")
-    player1.showCards()
-    desk.get_listCards().append(player1.chooseCard()) #when is a list you need to get it and append it
-    desk.caida() #detect event
     
     
-    
-    os.system('clear')
-    #player 2 turn 
-    
-    
-    desk.set_playerTurn(player2)
-    desk.showDeskCards()
-    print("\n[= " + player2.get_name() + " CARDS =]")
-    player2.showCards()
-    desk.get_listCards().append(player2.chooseCard())
-    desk.caida()
-    
-    
-    
-    
+desk.get_listCards().sort(key = Card.getValue)
+
+print("cartas ordenadas ==== =")
     #analyze combinations   
 desk.showDeskCards()
 

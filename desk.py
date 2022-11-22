@@ -2,14 +2,27 @@ import time
 from icecream import ic
 from player import Player
 
+cardsOrder = {
+    "1":1,
+    "2":2,
+    "3":2,
+    "4":4,
+    "5":5,
+    "6":6,
+    "7":7,
+    "J":8,
+    "Q":9,
+    "K":10
+    }
+
 
 class Desk:
-    def __init__(self, listCards,rules,playerTurn,playersList):
+    def __init__(self, listCards,rules,playerTurn,playersList,lastCard):
         self.__listCards = listCards
         self.__rules = rules
         self.__playerTurn = playerTurn
         self.__playersList = playersList
-        
+        self.__lastCard = lastCard
     #getters and setter
     
     def get_listCards(self):
@@ -24,6 +37,9 @@ class Desk:
     def get_playersList(self):
         return self.__playersList
     
+    def get_lastCard(self):
+        return self.__lastCard
+    
     #setters
     def set_listCards(self,listCards):
         self.__listCards = listCards
@@ -37,7 +53,9 @@ class Desk:
     def set_playersList(self,playersList):
         self.__playersList = playersList
         
-    
+    def set_lastCard(self,lastCard):
+        self.__lastCard = lastCard
+        
     #member functions
     def showDeskCards(self):
         print("========CARDS ON DESK =========")
@@ -50,27 +68,18 @@ class Desk:
         print(*self.__playersList,sep = "\t\n")
     
         
-    def caida(self):
-        cardsQtty = len(self.__listCards)
-        if(cardsQtty > 1):
-            if self.__listCards[cardsQtty-1].get_number() == self.__listCards[cardsQtty-2].get_number():
-                
-                #check if there is any higher card or continuos cards 
-                #develop a method that returns a list with all the cards, then add them to the saved cards
-                #after, delete them from desk
+    def caida(self,card):
+        if len(self.__listCards.get_listCards()) > 0:
+            if self.get_lastCard().get_number() == card.get_number():
+                self.__playerTurn.set_score(self.__playerTurn.get_score() + 2)        
+                self.__playerTurn.get_listSavedCards().append(card)
+                self.__playerTurn.get_listSavedCards().append(self.__lastCard)
+                self.get_listCards().remove(self.get_lastCard())
+                print(f'\nPlayer: {self.__playerTurn.get_name()}  Score: {self.__playerTurn.get_score()}')
                 print("==================================")
                 print("||             CAIDA            ||")
                 print("==================================")
                 time.sleep(2)
-                
-                self.__playerTurn.set_score(self.__playerTurn.get_score() + 2)
-                
-                self.__playerTurn.get_listSavedCards().append(self.__listCards[cardsQtty-1])
-                self.__playerTurn.get_listSavedCards().append(self.__listCards[cardsQtty-2])
-                
-                del(self.__listCards[cardsQtty-1])
-                del(self.__listCards[cardsQtty-2])
-                
-                print(f'\nPlayer: {self.__playerTurn.get_name()}  Score: {self.__playerTurn.get_score()}')
+            else:
+                self.__get_listCards().append(card) #when is a list you need to get it and append it    
             
-        

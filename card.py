@@ -26,3 +26,17 @@ class Card:
 
     def __repr__(self):
         return f'[{self.__number} {self.__symbol}]'
+      
+    @staticmethod
+    def getValue(ex):
+      e = ex.get_number()
+      e = str (e)
+      try:
+        return int(e)
+      except:
+        if e == 'J':
+          return 8
+        elif e == 'Q':
+          return 9
+        else:
+            return 10
