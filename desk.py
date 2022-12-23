@@ -1,6 +1,7 @@
 import time
 from icecream import ic
 from player import Player
+from card import Card
 
 cardsOrder = {
     "1":1,
@@ -18,68 +19,39 @@ cardsOrder = {
 
 class Desk:
     def __init__(self, listCards,rules,playerTurn,playersList,lastCard):
-        self.__listCards = listCards
-        self.__rules = rules
-        self.__playerTurn = playerTurn
-        self.__playersList = playersList
-        self.__lastCard = lastCard
-    #getters and setter
-    
-    def get_listCards(self):
-        return self.__listCards
-    
-    def get_rules(self):
-        return self.__rules
-    
-    def get_playerTurn(self):
-        return self.__playerTurn
-    
-    def get_playersList(self):
-        return self.__playersList
-    
-    def get_lastCard(self):
-        return self.__lastCard
-    
-    #setters
-    def set_listCards(self,listCards):
-        self.__listCards = listCards
-        
-    def set_rules(self,rules):
-        self.__rules = rules
-    
-    def set_playerTurn(self,playerTurn):
-        self.__playerTurn = playerTurn
-    
-    def set_playersList(self,playersList):
-        self.__playersList = playersList
-        
-    def set_lastCard(self,lastCard):
-        self.__lastCard = lastCard
+        self.listCards = []
+        self.rules = rules
+        self.playerTurn = playerTurn
+        self.playersList = []
+        self.lastCard = lastCard
         
     #member functions
     def showDeskCards(self):
         print("========CARDS ON DESK =========")
         print("||                             ||")
         print("||                             ||")
-        print(*self.__listCards,sep = "\t\n")
+        print(*self.listCards,sep = "\t\n")
         print("||                             ||")
         print("||                             ||")
         print("===============================")    
-        print(*self.__playersList,sep = "\t\n")
+        print(*self.playersList,sep = "\t\n")
     
         
     def caida(self,card):
-        if len(self.__listCards.get_listCards()) > 0:
-            if self.get_lastCard().get_number() == card.get_number():
-                self.__playerTurn.set_score(self.__playerTurn.get_score() + 2)        
-                self.__playerTurn.get_listSavedCards().append(card)
-                self.__playerTurn.get_listSavedCards().append(self.__lastCard)
-                self.get_listCards().remove(self.get_lastCard())
-                print(f'\nPlayer: {self.__playerTurn.get_name()}  Score: {self.__playerTurn.get_score()}')
+        if len(self.listCards) > 0:
+            if (Card.getValue(self.lastCard) == Card.getValue(card)):
+                self.playerTurn.score(self.playerTurn.score() + 2)        
+                self.playerTurn.listSavedCards().append(card)
+                self.playerTurn.listSavedCards().append(self.lastCard)
+                self.listCards.remove(self.lastCard)
+                print(f'\nPlayer: {self.playerTurn.name}  Score: {self.playerTurn.score()}')
                 print("==================================")
                 print("||             CAIDA            ||")
                 print("==================================")
-                time.sleep(2)
+                time.sleep(1)
             else:
-                self.__get_listCards().append(card) #when is a list you need to get it and append it    
-            
+                self.lastCard = card
+                self.listCards.append(card) #when is a list you need to get it and append it    
+        else:
+            self.lastCard = card
+            self.listCards.append(card)

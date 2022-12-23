@@ -5,7 +5,9 @@
 import random
 import os
 
+
 #modules
+from icecream import ic
 from card import Card
 from desk import Desk
 from kindSymbol import kindSymbol as ks
@@ -21,12 +23,14 @@ def shareCards(listCards,qty):
 
     
 
-
+# local variables 
 cardsQty = 5
-player1Cards = []
-player2Cards = []
+turns = 0
+playerNum = 2
+#local objects
+desk = Desk(None,True,None,None,None)
 
-listCards = [
+initialCards = [
             #HEARTS
             Card(ks.HEARTS,"1"),
             Card(ks.HEARTS,"2"),
@@ -77,75 +81,76 @@ listCards = [
             
         ]
 
-
-#empezar el juego
-
-random.shuffle(listCards)
-    ###print(listCards)
-
 print("==================================")
 print("=== 40  PLAYING  CARDS == GAME ===")
 print("==================================\n\n\n")
 
-#opt = int(input("WOULD YOU LIKE TO PLAY VS MACHINE OR VS FRIENDs? (1-2)"))
 
-print("======= PLAYER 1 vs PLAYER 2=====\n")
-    #create desk
+playerNum = int(input("How many players will play? "))
 
+for _ in range(0,playerNum):
+    player = Player(_,input(f"Player {_} write your name: "),0,None,None)    
+    desk.playersList.append(player)
 
-#create players
-print("================================================")
-player1 = Player(1,input("Player 1 write your name: "),0,player1Cards,[])
-print("================================================\n")
-player2 = Player(2,input("Player 2 write your name: "),0,player2Cards,[])
-print("================================================\n\n")
 print("Players, get READY!!!...\n\n")
-print("====" + player1.get_name() + " VS "+ player2.get_name() +"====" )
 
 #define rules
-desk = Desk("",True,player1,[player1,player2],"") #refact
+
 #ALL (2)
 #NORMAL (COUNT CAIDA AND LIMPIA) (4)
 
-
-#share cards
-player1.playerCards  =  shareCards(listCards,cardsQty)
-player2.playerCards  =  shareCards(listCards,cardsQty)
-
-while(player1.get_score() != 40 and player2.get_score() != 40):
-    turns = 1
-    while(turns < 5):
-        
-        #================= REFACTORIZAR ==============
-        #clean screen
-        os.system('clear')
-        #player 1 turn 
-        
-        desk.set_playerTurn(player1)
-        desk.showDeskCards()
-        print("\n[= " + player1.get_name() + " CARDS =]")
-        player1.showCards()
-        cardChoosen = player1.chooseCard()
-        desk.set_lastCard(cardChoosen)
-        desk.caida(cardChoosen) #detect event
-        
-        
-        
-        os.system('clear')
-        #player 2 turn 
-        
-        
-        desk.set_playerTurn(player2)
-        desk.showDeskCards()
-        print("\n[= " + player2.get_name() + " CARDS =]")
-        cardChoosen = player2.chooseCard()
-        desk.set_lastCard(cardChoosen)
-        desk.caida(cardChoosen) #detect event
-        turns+=1
+share = 0
+while(share >= 20):
     
+    #check winners
     
+    #assign a new set of cards
+    listCards = initialCards.copy()
     
-desk.get_listCards().sort(key = Card.getValue)
+    random.shuffle(listCards)
+    #clean desk
+    desk.lastCard = None
+    desk.listCards = None
+    print("**************** DESK CLEAN ****************************")
+    
+    while(len(listCards) > 0):
+        
+        turns = 0
+        
+        #share the cards to the players
+        for player in desk.playersList:
+            player.playerCards.append(shareCards(listCards,cardsQty))
+        
+        share += 1
+        print(f'"CARDS SHARED ===  {share} ======= "')
+        
+        while (turns < 5):
+            turns += 1
+            print(f'"======== TURNO {turns} ============"')
+            #================= REFACTORIZAR ==============
+            for player in desk.playersList:    
+                desk.playerTurn = player
+                desk.showDeskCards()
+                print("\n[= " + player.name + " CARDS =]")
+                player.showCards()
+                
+                limit = random.randint(0, len(player.playerCards)-1)
+                cardChoosen = Card(player.playerCards[limit].symbol,player.playerCards[limit].number)
+                
+                ic(desk.caida(cardChoosen)) #detect event
+                
+                if(player.score == 40):
+                    print(f'"<< PLAYER {player.name} YOU WIN >>"')
+                    input("")
+                
+                #os.system('clear')
+        print("\n================== COUNTING CARDS =======================")
+    for player in desk.playersList:
+        print(f'{ player.name }')
+        print(len(player.listSavedCards))
+    print("\n=================================================")
+    
+desk.listCards.sort(key = Card.getValue)
 
 print("cartas ordenadas ==== =")
     #analyze combinations   
