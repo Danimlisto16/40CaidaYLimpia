@@ -11,8 +11,8 @@ class Player:
     def showCards(self):
         iterator = 0
         for card in self.playerCards:
-          iterator = iterator + 1
-          print(f'{iterator}) {card.number} {card.symbol}')
+            iterator = iterator + 1
+            print(f'{iterator} ) {card.number} {card.symbol}')
         
     def __str__(self):
       return f'|  #{self.playerNumber}) |{self.name}| score: {self.score}'

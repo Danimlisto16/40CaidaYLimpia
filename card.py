@@ -12,16 +12,14 @@ class Card:
     def __repr__(self):
         return f'[{self.number} {self.symbol}]'
       
-    @staticmethod
-    def getValue(card):
-      e = card.get_number()
-      e = str (e)
+    def getValue(self):
+      num = str (self.number)
       try:
-        return int(e)
+        return int(num)
       except:
-        if e == 'J':
+        if num == 'J':
           return 8
-        elif e == 'Q':
+        elif num == 'Q':
           return 9
         else:
             return 10

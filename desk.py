@@ -30,14 +30,19 @@ class Desk:
         print("========CARDS ON DESK =========")
         print("||                             ||")
         print("||                             ||")
-        print(*self.listCards,sep = "\t\n")
+        print(self.listCards,sep = "\t\n")
         print("||                             ||")
         print("||                             ||")
         print("===============================")    
-        print(*self.playersList,sep = "\t\n")
+        [print(p.name) for p in self.playersList]
     
+        #REFACTORIZAR
+    def event(self,card):
+        #caida
+        #llevada
+        #caida y llevada
+        #limpia y limpia y llevada
         
-    def caida(self,card):
         if len(self.listCards) > 0:
             if (Card.getValue(self.lastCard) == Card.getValue(card)):
                 self.playerTurn.score(self.playerTurn.score() + 2)        
