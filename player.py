@@ -10,9 +10,12 @@ class Player:
         
     def showCards(self):
         iterator = 0
+        print("====================")
+        print("\n[" + self.name + " CARDS ]")
         for card in self.playerCards:
             iterator = iterator + 1
             print(f'{iterator} ) {card.number} {card.symbol}')
+        print("====================")
         
     def __str__(self):
       return f'|  #{self.playerNumber}) |{self.name}| score: {self.score}'
@@ -27,7 +30,7 @@ class Player:
                 if opt <= cardsLen and opt >= 1:
                     break
             except:
-                print("An exception occurred")
+                print("value exception, please write a number")
         card = Card(self.playerCards[opt-1].symbol,self.playerCards[opt-1].number)
         del(self.playerCards[opt-1])
         return card

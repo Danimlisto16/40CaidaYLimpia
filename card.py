@@ -12,6 +12,7 @@ class Card:
     def __repr__(self):
         return f'[{self.number} {self.symbol}]'
       
+    @staticmethod  
     def getValue(self):
       num = str (self.number)
       try:
@@ -23,3 +24,6 @@ class Card:
           return 9
         else:
             return 10
+    
+    
+      

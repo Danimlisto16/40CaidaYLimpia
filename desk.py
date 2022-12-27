@@ -34,29 +34,60 @@ class Desk:
         print("||                             ||")
         print("||                             ||")
         print("===============================")    
-        [print(p.name) for p in self.playersList]
+        [print(" >"+p.name + " "+ str(p.score) ) for p in self.playersList]
     
-        #REFACTORIZAR
+    @staticmethod
+    def orderCards(self, cardsList):
+      listOrderedCards = cardsList.copy()
+      return listOrderedCards.sort(key = Card.getValue)
+
     def event(self,card):
         #caida
-        #llevada
-        #caida y llevada
-        #limpia y limpia y llevada
-        
-        if len(self.listCards) > 0:
-            if (Card.getValue(self.lastCard) == Card.getValue(card)):
-                self.playerTurn.score(self.playerTurn.score() + 2)        
-                self.playerTurn.listSavedCards().append(card)
-                self.playerTurn.listSavedCards().append(self.lastCard)
-                self.listCards.remove(self.lastCard)
-                print(f'\nPlayer: {self.playerTurn.name}  Score: {self.playerTurn.score()}')
-                print("==================================")
-                print("||             CAIDA            ||")
-                print("==================================")
-                time.sleep(1)
-            else:
-                self.lastCard = card
-                self.listCards.append(card) #when is a list you need to get it and append it    
+        if(self.lastCard != None):
+            if Card.getValue(card) == Card.getValue(self.lastCard):
+                print("CAIDA")
+                self.playerTurn.score += 2
+                self.lastCard = None
+            self.checkConsecutiveCards(card)
         else:
             self.lastCard = card
             self.listCards.append(card)
+            
+    def checkConsecutiveCards(self,card):
+        print("Caida y llevada")
+        #llevada
+        flag = False
+        cardValue = Card.getValue(card)
+        if len(self.listCards) >= 2:
+            orderedCards = self.orderCards(self.listCards).copy()
+
+            for c in orderedCards:
+                if c.getValue() == cardValue:
+                    self.playerTurn.listSavedCards.append(c)
+                    self.listCards.remove(c)
+                    cardValue += 1
+                    Flag = True
+            if Flag :
+                self.playerTurn.listSavedCards.append(card)
+                self.lastCard = None
+            else:
+                self.lastCard = card
+                self.listCards.append(card)
+
+        # if len(self.listCards) > 0:
+        #     if (Card.getValue(self.lastCard) == Card.getValue(card)):
+        #         self.playerTurn.score(self.playerTurn.score() + 2)        
+        #         self.playerTurn.listSavedCards().append(card)
+        #         self.playerTurn.listSavedCards().append(self.lastCard)
+        #         self.listCards.remove(self.lastCard)
+        #         print(f'\nPlayer: {self.playerTurn.name}  Score: {self.playerTurn.score()}')
+        #         print("==================================")
+        #         print("||             CAIDA            ||")
+        #         print("==================================")
+        #         time.sleep(1)
+        #     else:
+        #         self.lastCard = card
+        #         self.listCards.append(card) #when is a list you need to get it and append it    
+        # else:
+        #     self.lastCard = card
+        #     self.listCards.append(card)

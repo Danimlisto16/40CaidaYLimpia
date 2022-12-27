@@ -28,6 +28,7 @@ cardsQty = 5
 turns = 0
 playerNum = 2
 share = 0
+thereIsWinner = True
 
 #local objects
 desk = Desk([],True,None,[],None)
@@ -96,58 +97,60 @@ for _ in range(0,playerNum):
 
 print("Players, get READY!!!...\n\n")
 
-
-while(turns != 2):
-    turns += 1
-    print("*****TURNS NUMBER ***************************************** "+ str(turns))
-    #assign a new set of cards
-    listCards = initialCards.copy()
-    random.shuffle(listCards)
-    #clean desk
-    desk.lastCard = None
+while(thereIsWinner):
     desk.listCards = []
-    
+    desk.lastCard = None
+
     for p in desk.playersList:
         p.listSavedCards = [] 
         p.savedCards = []
+
+    listCards = initialCards.copy()
+    random.shuffle(listCards)
+
+
+    randomScore = random.randint(0,len(desk.playersList)-1)
+
+    while(len(listCards) > 0 and thereIsWinner):
         
-    while(len(listCards) > 0):
-        #share the cards to all the players
         for player in desk.playersList:
-            player.playerCards = shareCards(listCards,cardsQty)
-        
-        print(f'"CARDS SHARED ===  {share} ======= "')
-        
-        while (len(desk.playersList[-1].playerCards) > 0):
-            print(f'"======== TURN {turns} ============"')
-            
-            #================= REFACTOR ==============
+            player.playerCards = shareCards(listCards,5)
+
+        while(len(desk.playersList[-1].playerCards) != 0 and thereIsWinner):
             for player in desk.playersList:    
-                desk.playerTurn = player
-                desk.showDeskCards()
-                print("\n[= " + player.name + " CARDS =]")
-                player.showCards()  
-                limit = random.randint(0, len(player.playerCards)-1)
-                cardChoosen = Card(player.playerCards[limit].symbol,player.playerCards[limit].number)
-                del player.playerCards[limit]
+                    desk.playerTurn = player
+                    player.showCards()  
+                    
+                    cardChoosen = player.chooseCard()
+                    
+                    desk.event(cardChoosen)
+                    # limit = random.randint(0, len(player.playerCards)-1)
+                    # cardChoosen = Card(player.playerCards[limit].symbol,player.playerCards[limit].number)
+                    # del player.playerCards[limit]
+                    
+                    desk.showDeskCards()
 
-                desk.listCards.append(cardChoosen)
-                
-                desk.showDeskCards()
-                #desk.caida(cardChoosen) #detect event
-                
-                #os.system('clear')
-        print("\n================== COUNTING CARDS =======================")
-        for player in desk.playersList:
-            print(f'{ player.name }')
-            print(len(player.listSavedCards))
-        print("\n=================================================")
+                    
+                    # if(player.playerNumber == randomScore):
+                    #     player.score += 2
+                    #     if (player.score != 40):
+                    #         print("")
+                    #     else:
+                    #         thereIsWinner = False
+                    #         print("PLAYER "+player.name+" You WIN!!")
+                    #         break
+                    
+        # print("\n================== COUNTING CARDS =======================")
+        # for player in desk.playersList:
+        #     print(f'{ player.name }')
+        #     print(len(player.listSavedCards))
+        # print("\n=================================================")
     
-desk.listCards.sort(key = Card.getValue)
+#desk.listCards.sort(key = Card.getValue)
 
-print("cartas ordenadas ==== =")
+#print("cartas ordenadas ==== =")
     #analyze combinations   
-desk.showDeskCards()
+#desk.showDeskCards()
 
 
 
