@@ -13,8 +13,10 @@ class Card:
         return f'[{self.number} {self.symbol}]'
       
     @staticmethod  
-    def getValue(self):
-      num = str (self.number)
+    def getValue(x):
+      if x is None:
+        return 0
+      num = str (x.number)
       try:
         return int(num)
       except:
@@ -22,8 +24,8 @@ class Card:
           return 8
         elif num == 'Q':
           return 9
-        else:
-            return 10
-    
-    
+        else :
+          return 10
+
+
       

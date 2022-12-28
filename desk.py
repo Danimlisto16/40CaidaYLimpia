@@ -37,42 +37,74 @@ class Desk:
         [print(" >"+p.name + " "+ str(p.score) ) for p in self.playersList]
     
     @staticmethod
-    def orderCards(self, cardsList):
-      listOrderedCards = cardsList.copy()
-      return listOrderedCards.sort(key = Card.getValue)
+    def orderCards(cardsList):
+      if len(cardsList) > 0:
+        listOrderedCards = cardsList.copy()
+        return listOrderedCards.sort(key = Card.getValue)
+        """_summary_
+
+        >> check why the function is returning a nonetype list if there is one item inside
+        """        
+      return []
+
 
     def event(self,card):
+        
+        isCaida = False
+        isLlevada = False
+        cardValue = Card.getValue(card)
+
+        
+        orderedCards = self.orderCards(self.listCards)
+        
         #caida
-        if(self.lastCard != None):
-            if Card.getValue(card) == Card.getValue(self.lastCard):
+        if Card.getValue(card) == Card.getValue(self.lastCard):
                 print("CAIDA")
                 self.playerTurn.score += 2
                 self.lastCard = None
-            self.checkConsecutiveCards(card)
+                isCaida = True
+        for c in orderedCards:
+            if Card.getValue(c) == cardValue:
+                self.playerTurn.listSavedCards.append(c)
+                self.listCards.remove(c)
+                cardValue += 1
+                isLlevada = True
+        if isCaida or isLlevada :
+            self.playerTurn.listSavedCards.append(card)
         else:
             self.lastCard = card
             self.listCards.append(card)
-            
-    def checkConsecutiveCards(self,card):
-        print("Caida y llevada")
-        #llevada
-        flag = False
-        cardValue = Card.getValue(card)
-        if len(self.listCards) >= 2:
-            orderedCards = self.orderCards(self.listCards).copy()
 
-            for c in orderedCards:
-                if c.getValue() == cardValue:
-                    self.playerTurn.listSavedCards.append(c)
-                    self.listCards.remove(c)
-                    cardValue += 1
-                    Flag = True
-            if Flag :
-                self.playerTurn.listSavedCards.append(card)
-                self.lastCard = None
-            else:
-                self.lastCard = card
-                self.listCards.append(card)
+    #     #caida
+    #         if Card.getValue(card) == Card.getValue(self.lastCard):
+    #             print("CAIDA")
+    #             self.playerTurn.score += 2
+    #             self.lastCard = None
+    #         self.checkConsecutiveCards(card)
+    #         else:
+    #             self.lastCard = card
+    #             self.listCards.append(card)
+            
+    # def checkConsecutiveCards(self,card):
+    #     print("Caida y llevada")
+    #     #llevada
+    #     flag = False
+    #     cardValue = Card.getValue(card)
+    #     if len(self.listCards) >= 2:
+    #         orderedCards = self.orderCards(self.listCards).copy()
+
+    #         for c in orderedCards:
+    #             if c.getValue() == cardValue:
+    #                 self.playerTurn.listSavedCards.append(c)
+    #                 self.listCards.remove(c)
+    #                 cardValue += 1
+    #                 Flag = True
+    #         if Flag :
+    #             self.playerTurn.listSavedCards.append(card)
+    #             self.lastCard = None
+    #         else:
+    #             self.lastCard = card
+    #             self.listCards.append(card)
 
         # if len(self.listCards) > 0:
         #     if (Card.getValue(self.lastCard) == Card.getValue(card)):
