@@ -38,14 +38,11 @@ class Desk:
     
     @staticmethod
     def orderCards(cardsList):
-      if len(cardsList) > 0:
-        listOrderedCards = cardsList.copy()
-        return listOrderedCards.sort(key = Card.getValue)
-        """_summary_
-
-        >> check why the function is returning a nonetype list if there is one item inside
-        """        
-      return []
+        if len(cardsList) > 0:
+            listOrderedCards = cardsList.copy()
+            listOrderedCards.sort(key = Card.getValue)
+            return listOrderedCards 
+        return []
 
 
     def event(self,card):
@@ -63,7 +60,8 @@ class Desk:
                 self.playerTurn.score += 2
                 self.lastCard = None
                 isCaida = True
-        for c in orderedCards:
+        for c in orderedCards: 
+        #fix llevada function and fix the last card after a cycle        
             if Card.getValue(c) == cardValue:
                 self.playerTurn.listSavedCards.append(c)
                 self.listCards.remove(c)

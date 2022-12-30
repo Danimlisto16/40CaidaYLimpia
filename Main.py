@@ -112,45 +112,27 @@ while(thereIsWinner):
     randomScore = random.randint(0,len(desk.playersList)-1)
 
     while(len(listCards) > 0 and thereIsWinner):
+        desk.lastCard = None
         
         for player in desk.playersList:
             player.playerCards = shareCards(listCards,5)
-
+        
         while(len(desk.playersList[-1].playerCards) != 0 and thereIsWinner):
             for player in desk.playersList:    
                     desk.playerTurn = player
                     player.showCards()  
-                    
                     cardChoosen = player.chooseCard()
-                    
                     desk.event(cardChoosen)
-                    # limit = random.randint(0, len(player.playerCards)-1)
-                    # cardChoosen = Card(player.playerCards[limit].symbol,player.playerCards[limit].number)
-                    # del player.playerCards[limit]
-                    
                     desk.showDeskCards()
 
-                    
-                    # if(player.playerNumber == randomScore):
-                    #     player.score += 2
-                    #     if (player.score != 40):
-                    #         print("")
-                    #     else:
-                    #         thereIsWinner = False
-                    #         print("PLAYER "+player.name+" You WIN!!")
-                    #         break
-                    
-        # print("\n================== COUNTING CARDS =======================")
-        # for player in desk.playersList:
-        #     print(f'{ player.name }')
-        #     print(len(player.listSavedCards))
-        # print("\n=================================================")
-    
-#desk.listCards.sort(key = Card.getValue)
+                    #read rules before start game, all 2 and carton until 30
 
-#print("cartas ordenadas ==== =")
-    #analyze combinations   
-#desk.showDeskCards()
+                    #condition for counting cards before end the player hand
+                    #and add points
+
+                    #condition when the player score is 40
+
+
 
 
 

@@ -2,11 +2,11 @@ from card import Card
 
 class Player:
     def __init__(self, playerNumber,name, score, playerCards,listSavedCards):
-      self.playerNumber = playerNumber
-      self.name = name
-      self.score = score      
-      self.playerCards = []
-      self.listSavedCards = []
+        self.playerNumber = playerNumber
+        self.name = name
+        self.score = score      
+        self.playerCards = []
+        self.listSavedCards = []
         
     def showCards(self):
         iterator = 0
