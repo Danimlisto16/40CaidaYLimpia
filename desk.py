@@ -73,51 +73,30 @@ class Desk:
             self.lastCard = card
             self.listCards.append(card)
 
-    #     #caida
-    #         if Card.getValue(card) == Card.getValue(self.lastCard):
-    #             print("CAIDA")
-    #             self.playerTurn.score += 2
-    #             self.lastCard = None
-    #         self.checkConsecutiveCards(card)
-    #         else:
-    #             self.lastCard = card
-    #             self.listCards.append(card)
-            
-    # def checkConsecutiveCards(self,card):
-    #     print("Caida y llevada")
-    #     #llevada
-    #     flag = False
-    #     cardValue = Card.getValue(card)
-    #     if len(self.listCards) >= 2:
-    #         orderedCards = self.orderCards(self.listCards).copy()
+    def checkWinner(self):
+        for player in self.playersList:
+            if player.score == 40:
+                print(".............YOU WIN..........!!!")
+                print(f'NUM: {player.playerNumber}')
+                print(f'PLAYER: {player.name}')
+                print(f'SCORE: {player.score}')
+                return True
+        return False
 
-    #         for c in orderedCards:
-    #             if c.getValue() == cardValue:
-    #                 self.playerTurn.listSavedCards.append(c)
-    #                 self.listCards.remove(c)
-    #                 cardValue += 1
-    #                 Flag = True
-    #         if Flag :
-    #             self.playerTurn.listSavedCards.append(card)
-    #             self.lastCard = None
-    #         else:
-    #             self.lastCard = card
-    #             self.listCards.append(card)
+    def countCards(self):
+        print("<<<<<<<<<<< SHOW INFORMATION >>>>>>>>>>>")
+        for player in self.playersList:
+            savedCards = len(player.listSavedCards)
 
-        # if len(self.listCards) > 0:
-        #     if (Card.getValue(self.lastCard) == Card.getValue(card)):
-        #         self.playerTurn.score(self.playerTurn.score() + 2)        
-        #         self.playerTurn.listSavedCards().append(card)
-        #         self.playerTurn.listSavedCards().append(self.lastCard)
-        #         self.listCards.remove(self.lastCard)
-        #         print(f'\nPlayer: {self.playerTurn.name}  Score: {self.playerTurn.score()}')
-        #         print("==================================")
-        #         print("||             CAIDA            ||")
-        #         print("==================================")
-        #         time.sleep(1)
-        #     else:
-        #         self.lastCard = card
-        #         self.listCards.append(card) #when is a list you need to get it and append it    
-        # else:
-        #     self.lastCard = card
-        #     self.listCards.append(card)
+            print(f'NUM: {player.playerNumber}')
+            print(f'PLAYER: {player.name}')
+            print(f'SCORE: {player.score}')
+            print(f'CARDS #: {savedCards}')
+            if(savedCards >= 20) and player.score < 30:
+                points = (savedCards - 20) + 6
+                if (points % 2) == 1:
+                    points += 1
+                player.score += points
+                print(f'POINTS ADDED #:{points}')
+                print(f'NEW SCORE: {player.score}')
+            print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")

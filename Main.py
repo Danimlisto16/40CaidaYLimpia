@@ -28,7 +28,7 @@ cardsQty = 5
 turns = 0
 playerNum = 2
 share = 0
-thereIsWinner = True
+thereIsWinner = False
 
 #local objects
 desk = Desk([],True,None,[],None)
@@ -89,15 +89,24 @@ print("=== 40  PLAYING  CARDS == GAME ===")
 print("==================================\n\n\n")
 
 #validate players number
-playerNum = int(input("How many players will play? "))
+while True:
+    try:
+        playerNum = int(input("How many players will play (2 or 4)? "))
+        if playerNum != 2 and playerNum != 4:
+            print("** You must select 2 or 4 **")
+        else:
+            break   
+    except:
+        print('An exception occurred')
 
-for _ in range(0,playerNum):
-    player = Player(_,input(f"Player {_} write your name: "),0,[],[])    
+for _ in range(1,playerNum+1):
+    player = Player(_,input(f"Player {_} write your name: "),20,[],[])    
     desk.playersList.append(player)
 
 print("Players, get READY!!!...\n\n")
 
-while(thereIsWinner):
+while(not thereIsWinner):
+    desk.countCards()
     desk.listCards = []
     desk.lastCard = None
 
@@ -108,29 +117,36 @@ while(thereIsWinner):
     listCards = initialCards.copy()
     random.shuffle(listCards)
 
+    #randomScore = random.randint(0,len(desk.playersList)-1)
 
-    randomScore = random.randint(0,len(desk.playersList)-1)
-
-    while(len(listCards) > 0 and thereIsWinner):
+    while(len(listCards) > 0 and not thereIsWinner):
         desk.lastCard = None
         
         for player in desk.playersList:
             player.playerCards = shareCards(listCards,5)
         
-        while(len(desk.playersList[-1].playerCards) != 0 and thereIsWinner):
-            for player in desk.playersList:    
+        while(len(desk.playersList[-1].playerCards) != 0 and  not thereIsWinner):
+            for player in desk.playersList:  
+                    
                     desk.playerTurn = player
                     player.showCards()  
                     cardChoosen = player.chooseCard()
                     desk.event(cardChoosen)
+                    os.system("clear")
                     desk.showDeskCards()
-
-                    #read rules before start game, all 2 and carton until 30
-
-                    #condition for counting cards before end the player hand
-                    #and add points
-
+                    thereIsWinner  = desk.checkWinner()
                     
+                    if thereIsWinner:
+                        break
+    
+                    #Read rules before start game, all 2 and carton until 30
+
+                    #Generate options for take combination of cards
+
+                    #Condition for counting cards before end the player hand
+                    #and add points  DONE
+
+                    #Condition when the player score is 40  DONE
 
 
 

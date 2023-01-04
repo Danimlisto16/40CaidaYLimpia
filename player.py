@@ -22,6 +22,7 @@ class Player:
       
       
     def chooseCard(self):
+        print("==========================================")
         cardsLen = len(self.playerCards)
         print(f"\nYou have {cardsLen}  card(s)\n")
         while(True):
@@ -33,4 +34,5 @@ class Player:
                 print("value exception, please write a number")
         card = Card(self.playerCards[opt-1].symbol,self.playerCards[opt-1].number)
         del(self.playerCards[opt-1])
+        print("==========================================")
         return card
