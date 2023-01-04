@@ -130,7 +130,7 @@ while(thereIsWinner):
                     #condition for counting cards before end the player hand
                     #and add points
 
-                    #condition when the player score is 40
+                    
 
 
 
