@@ -31,7 +31,7 @@ class Desk:
         print("========CARDS ON DESK =========")
         print("||                             ||")
         print("||                             ||")
-        print(self.listCards,sep = "\t\n")
+        print(self.listCards,sep = "\t")
         print("||                             ||")
         print("||                             ||")
         print("===============================")    
@@ -47,15 +47,11 @@ class Desk:
 
 
     def event(self,card):
-        
         isCaida = False
         isLlevada = False
         cardValue = Card.getValue(card)
         waitSec = 1
-
-        
         orderedCards = self.orderCards(self.listCards)
-        
         #caida
         if Card.getValue(card) == Card.getValue(self.lastCard):
                 print("<||> CAIDA <||>")
@@ -84,6 +80,7 @@ class Desk:
     def checkWinner(self):
         for player in self.playersList:
             if player.score >= 40:
+                #*********************CHANGE FOR A PRINT PLAYER INFOR
                 print(".............YOU WIN..........!!!")
                 print(f'NUM: {player.playerNumber}')
                 print(f'PLAYER: {player.name}')
@@ -93,22 +90,29 @@ class Desk:
         return False
 
     def countCards(self):
-        print("<<<<<<<<<<< SHOW INFORMATION >>>>>>>>>>>")
+        print("^^^^^^^^^^^^^ SHOW INFORMATION ^^^^^^^^^^^^^^^^^")
         for player in self.playersList:
             savedCards = len(player.listSavedCards)
 
+# D*********************CHANGE FOR A PRINT PLAYER INFOR
             print(f'NUM: {player.playerNumber}')
             print(f'PLAYER: {player.name}')
             print(f'SCORE: {player.score}')
             print(f'CARDS #: {savedCards}')
+
             if(savedCards >= 20): #FIX
                 points = (savedCards - 20) + 6
                 if (points % 2) == 1:
                         points += 1
-                if self.ruleCardsTill30 and player.score < 30:
+            # D*********************CHANGE FOR A PRINT PLAYER INFOR
+            
+
+                if self.ruleCardsTill30 and player.score < 30:  
+
                     player.score += points
                     print(f'POINTS ADDED #:{points}')
                     print(f'NEW SCORE: {player.score}')
+
                 elif not self.ruleCardsTill30:
                     player.score += points
                     print(f'POINTS ADDED #:{points}')

@@ -172,7 +172,8 @@ while(not thereIsWinner):
                     player.showCards()  
                     cardChoosen = player.chooseCard()
                     desk.event(cardChoosen)
-                    os.system("clear")
+                    #os.system("clear")
+                    print("----------------------------------------------------")
                     desk.showDeskCards()
                     thereIsWinner  = desk.checkWinner()
                     
