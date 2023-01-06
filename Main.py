@@ -31,7 +31,7 @@ share = 0
 thereIsWinner = False
 
 #local objects
-desk = Desk([],True,None,[],None)
+desk = Desk([],False,False,None,[],None)
 
 initialCards = [
             #HEARTS
@@ -84,11 +84,17 @@ initialCards = [
             
         ]
 
-print("==================================")
-print("=== 40  PLAYING  CARDS == GAME ===")
-print("==================================\n\n\n")
+print("\t\t\t==================================")
+print("\t\t\t=== 40  PLAYING  CARDS == GAME ===")
+print("\t\t\t==================================\n\n\n")
+
+
+#cards count till 30
+#caida y limpia, all 2
 
 #validate players number
+print("=========P L A Y E R S============\n\n")
+
 while True:
     try:
         playerNum = int(input("How many players will play (2 or 4)? "))
@@ -98,9 +104,44 @@ while True:
             break   
     except:
         print('An exception occurred')
+print("==================================\n\n")
+
+# Read ruleAll2
+
+print("===========R U L E S==============\n\n")
+
+while True:
+    try:
+        all2 = input("Do you want to play all 2 (y/n) ?: ")
+        if all2 != 'y' and all2 != 'n':
+            print("** You must select 'y' or 'n' **")
+        else:
+            if all2 == 'y':
+                desk.ruleAll2 = True
+            break   
+    except:
+        print('An exception occurred')
+print("==================================\n\n")
+
+#Read ruleCardsTil30 
+
+while True:
+    try:
+        cardsUntil30 = input("Do you want to count cards after 30 (y/n)? : ")
+        if cardsUntil30 != 'y' and cardsUntil30 != 'n':
+            print("** You must select 'y' or 'n' **")
+        else:
+            if cardsUntil30 == 'y':
+                desk.ruleCardsTill30 = True
+            break   
+    except:
+        print('An exception occurred')
+print("==================================\n\n")
+
+#>>>>>>>>>>> PRINT A LITTLE INTRODUCTION TO THE RULES >>>>>>>>>>>>>>>
 
 for _ in range(1,playerNum+1):
-    player = Player(_,input(f"Player {_} write your name: "),20,[],[])    
+    player = Player(_,input(f"Player {_} write your name: "),0,[],[])    
     desk.playersList.append(player)
 
 print("Players, get READY!!!...\n\n")
@@ -117,7 +158,6 @@ while(not thereIsWinner):
     listCards = initialCards.copy()
     random.shuffle(listCards)
 
-    #randomScore = random.randint(0,len(desk.playersList)-1)
 
     while(len(listCards) > 0 and not thereIsWinner):
         desk.lastCard = None
@@ -139,14 +179,10 @@ while(not thereIsWinner):
                     if thereIsWinner:
                         break
     
-                    #Read rules before start game, all 2 and carton until 30
+                    #Read rules before start game, all 2 and carton until 30 DONE
 
                     #Generate options for take combination of cards
 
-                    #Condition for counting cards before end the player hand
-                    #and add points  DONE
-
-                    #Condition when the player score is 40  DONE
 
 
 

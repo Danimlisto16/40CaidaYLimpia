@@ -18,9 +18,10 @@ cardsOrder = {
 
 
 class Desk:
-    def __init__(self, listCards,rules,playerTurn,playersList,lastCard):
+    def __init__(self, listCards,ruleAll2,ruleCardsTill30,playerTurn,playersList,lastCard):
         self.listCards = []
-        self.rules = rules
+        self.ruleAll2 = ruleAll2
+        self.ruleCardsTill30 = ruleCardsTill30
         self.playerTurn = playerTurn
         self.playersList = []
         self.lastCard = lastCard
@@ -50,16 +51,18 @@ class Desk:
         isCaida = False
         isLlevada = False
         cardValue = Card.getValue(card)
+        waitSec = 1
 
         
         orderedCards = self.orderCards(self.listCards)
         
         #caida
         if Card.getValue(card) == Card.getValue(self.lastCard):
-                print("CAIDA")
+                print("<||> CAIDA <||>")
                 self.playerTurn.score += 2
                 self.lastCard = None
                 isCaida = True
+                time.sleep(waitSec)
         for c in orderedCards: 
         #fix llevada function and fix the last card after a cycle        
             if Card.getValue(c) == cardValue:
@@ -69,17 +72,23 @@ class Desk:
                 isLlevada = True
         if isCaida or isLlevada :
             self.playerTurn.listSavedCards.append(card)
+            #condition for evaluate LIMPIA
+            if (len(self.listCards) == 0) and not self.ruleAll2 :
+                print("<||> LIMPIA <||>")
+                self.playerTurn.score +=2
+                time.sleep(waitSec)
         else:
             self.lastCard = card
             self.listCards.append(card)
 
     def checkWinner(self):
         for player in self.playersList:
-            if player.score == 40:
+            if player.score >= 40:
                 print(".............YOU WIN..........!!!")
                 print(f'NUM: {player.playerNumber}')
                 print(f'PLAYER: {player.name}')
                 print(f'SCORE: {player.score}')
+                print('................................')
                 return True
         return False
 
@@ -92,11 +101,17 @@ class Desk:
             print(f'PLAYER: {player.name}')
             print(f'SCORE: {player.score}')
             print(f'CARDS #: {savedCards}')
-            if(savedCards >= 20) and player.score < 30:
+            if(savedCards >= 20): #FIX
                 points = (savedCards - 20) + 6
                 if (points % 2) == 1:
-                    points += 1
-                player.score += points
-                print(f'POINTS ADDED #:{points}')
-                print(f'NEW SCORE: {player.score}')
+                        points += 1
+                if self.ruleCardsTill30 and player.score < 30:
+                    player.score += points
+                    print(f'POINTS ADDED #:{points}')
+                    print(f'NEW SCORE: {player.score}')
+                elif not self.ruleCardsTill30:
+                    player.score += points
+                    print(f'POINTS ADDED #:{points}')
+                    print(f'NEW SCORE: {player.score}')
             print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+        self.checkWinner()
