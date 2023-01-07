@@ -46,45 +46,70 @@ class Desk:
         return []
 
 
-    def event(self,card):
-        isCaida = False
-        isLlevada = False
-        cardValue = Card.getValue(card)
-        waitSec = 1
+    def checkConsecutives(self,cardsChoosed):
+        isLLevada = False
+
+        if cardsChoosed is list:
+            card1 = cardsChoosed[0]
+            card2 = cardsChoosed[1]
+            card3 = cardsChoosed[2]
+
+            self.playerTurn.listSavedCards.append(card1)
+            self.playerTurn.listSavedCards.append(card2)
+            self.playerTurn.listSavedCards.append(card3)
+
+            self.listCards.remove(card2)
+            self.listCards.remove(card3)
+            value1 += 1 
+        else:
+            card1 = cardsChoosed
+            value1 = Card.getValue(card1)
+
         orderedCards = self.orderCards(self.listCards)
-        #caida
-        if Card.getValue(card) == Card.getValue(self.lastCard):
-                print("<||> CAIDA <||>")
-                self.playerTurn.score += 2
-                self.lastCard = None
-                isCaida = True
-                time.sleep(waitSec)
+
         for c in orderedCards: 
-        #fix llevada function and fix the last card after a cycle        
-            if Card.getValue(c) == cardValue:
+            if Card.getValue(c) == value1: #SUM CARDS FOR LLEVADA
                 self.playerTurn.listSavedCards.append(c)
                 self.listCards.remove(c)
-                cardValue += 1
-                isLlevada = True
+                value1 += 1
+                isLLevada = True
+        return isLLevada
+
+    def checkCaida(self,card):
+        if Card.getValue(card) == Card.getValue(self.lastCard):
+                print("<||> CAIDA <||>")
+                time.sleep(2)
+                self.playerTurn.score += 2
+                self.lastCard = None
+                return True
+        return False
+                
+
+
+    def event(self,cardsChoosen):
+        isCaida = False
+        isLlevada = False
+        
+        isCaida = self.checkCaida(self,cardsChoosen[0])
+        isLlevada = self.checkConsecutives(self,cardsChoosen)
+        
         if isCaida or isLlevada :
-            self.playerTurn.listSavedCards.append(card)
-            #condition for evaluate LIMPIA
-            if (len(self.listCards) == 0) and not self.ruleAll2 :
+            cardsOnDesk = len(self.listCards)
+            if (cardsOnDesk == 0) and not self.ruleAll2 :
                 print("<||> LIMPIA <||>")
-                self.playerTurn.score +=2
-                time.sleep(waitSec)
+                self.playerTurn.score += 2
+                time.sleep(2)
         else:
-            self.lastCard = card
-            self.listCards.append(card)
+            self.listCards.append(cardsChoosen[0])
+            self.lastCard = cardsChoosen[0]
+            
 
     def checkWinner(self):
         for player in self.playersList:
             if player.score >= 40:
                 #*********************CHANGE FOR A PRINT PLAYER INFOR
                 print(".............YOU WIN..........!!!")
-                print(f'NUM: {player.playerNumber}')
-                print(f'PLAYER: {player.name}')
-                print(f'SCORE: {player.score}')
+                player.showInfo()
                 print('................................')
                 return True
         return False
@@ -93,29 +118,16 @@ class Desk:
         print("^^^^^^^^^^^^^ SHOW INFORMATION ^^^^^^^^^^^^^^^^^")
         for player in self.playersList:
             savedCards = len(player.listSavedCards)
-
-# D*********************CHANGE FOR A PRINT PLAYER INFOR
-            print(f'NUM: {player.playerNumber}')
-            print(f'PLAYER: {player.name}')
-            print(f'SCORE: {player.score}')
-            print(f'CARDS #: {savedCards}')
-
+            player.showInfo()
             if(savedCards >= 20): #FIX
                 points = (savedCards - 20) + 6
                 if (points % 2) == 1:
                         points += 1
-            # D*********************CHANGE FOR A PRINT PLAYER INFOR
-            
-
                 if self.ruleCardsTill30 and player.score < 30:  
-
                     player.score += points
-                    print(f'POINTS ADDED #:{points}')
-                    print(f'NEW SCORE: {player.score}')
-
                 elif not self.ruleCardsTill30:
                     player.score += points
-                    print(f'POINTS ADDED #:{points}')
-                    print(f'NEW SCORE: {player.score}')
+                print(f'POINTS ADDED #:{points}')
+                print(f'SCORE: {player.score}')
             print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
         self.checkWinner()

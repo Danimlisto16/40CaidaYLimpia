@@ -43,6 +43,11 @@ class Player:
         return card
         
 
+    def showInfo(self):
+        print(f'NUM: {self.playerNumber}')
+        print(f'PLAYER: {self.name}')
+        print(f'SCORE: {self.score}')
+        print(f'CARDS #: {self.savedCards}')
     
     def checkRepeatCards(self):
         listCards = self.playerCards.copy()
