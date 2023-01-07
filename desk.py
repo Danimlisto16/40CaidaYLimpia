@@ -48,8 +48,7 @@ class Desk:
 
     def checkConsecutives(self,cardsChoosed):
         isLLevada = False
-
-        if cardsChoosed is list:
+        if type(cardsChoosed) is list:
             card1 = cardsChoosed[0]
             card2 = cardsChoosed[1]
             card3 = cardsChoosed[2]
@@ -60,10 +59,9 @@ class Desk:
 
             self.listCards.remove(card2)
             self.listCards.remove(card3)
-            value1 += 1 
+            value1 = Card.getValue(card1)+ 1 
         else:
-            card1 = cardsChoosed
-            value1 = Card.getValue(card1)
+            value1 = Card.getValue(cardsChoosed)
 
         orderedCards = self.orderCards(self.listCards)
 
@@ -76,12 +74,12 @@ class Desk:
         return isLLevada
 
     def checkCaida(self,card):
-        if Card.getValue(card) == Card.getValue(self.lastCard):
-                print("<||> CAIDA <||>")
-                time.sleep(2)
-                self.playerTurn.score += 2
-                self.lastCard = None
-                return True
+        if type(card) != list:
+            if Card.getValue(card) == Card.getValue(self.lastCard):
+                    print("<||> CAIDA <||>")
+                    time.sleep(2)
+                    self.playerTurn.score += 2
+                    return True
         return False
                 
 
@@ -89,19 +87,19 @@ class Desk:
     def event(self,cardsChoosen):
         isCaida = False
         isLlevada = False
-        
-        isCaida = self.checkCaida(self,cardsChoosen[0])
-        isLlevada = self.checkConsecutives(self,cardsChoosen)
+        isCaida = self.checkCaida(cardsChoosen)
+        isLlevada = self.checkConsecutives(cardsChoosen)
         
         if isCaida or isLlevada :
             cardsOnDesk = len(self.listCards)
             if (cardsOnDesk == 0) and not self.ruleAll2 :
                 print("<||> LIMPIA <||>")
+                self.lastCard = None
                 self.playerTurn.score += 2
                 time.sleep(2)
         else:
-            self.listCards.append(cardsChoosen[0])
-            self.lastCard = cardsChoosen[0]
+            self.listCards.append(cardsChoosen)
+            self.lastCard = cardsChoosen
             
 
     def checkWinner(self):

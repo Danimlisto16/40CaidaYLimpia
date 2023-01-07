@@ -14,40 +14,48 @@ class Player:
         return f'|  #{self.playerNumber}) |{self.name}| score: {self.score}'
 
 
-    def showCards(self):
-        iterator = 0
+    def showOptions(self, options):
         print("====================")
+        ite = 1
         print("\n[" + self.name + " CARDS ]")
-        for card in self.playerCards:
-            iterator = iterator + 1
-            print(f'{iterator} ) {card.number} {card.symbol}')
+        for card in options:
+            print(f'{ite} ) {card}')
+            ite+=1
         print("====================")
         
 
-    def chooseCard(self): #REFACTOR **************
-        print("==========================================")
+    def chooseCard(self, desk): #REFACTOR **************
+        cardChoosed = []
+        options = self.playerCards
+        options.extend(self.generateOptions(desk.listCards))
+
+        self.showOptions(options)
+
         if len(self.playerCards) == 5:
             self.checkRepeatCards()
-        cardsLen = len(self.playerCards)
-        print(f"\nYou have {cardsLen}  card(s)\n")
+
+        print("==========================================")
+        optLen = len(options)            
+        print(f"\nYou have options(s)\n")
         while(True):
             try:
-                opt = int(input(f"\nPlayer {self.playerNumber})|{self.name}| choose a card (1-{cardsLen}) : "))
-                if  opt >= 1 and opt <= cardsLen:
+                opt = int(input(f"\nPlayer {self.playerNumber})|{self.name}| choose a card (1-{optLen}) : "))
+                if  opt >= 1 and opt <= optLen:
+                    opt = opt - 1
                     break
             except:
                 print("value exception, please write a number")
-        card = Card(self.playerCards[opt-1].symbol,self.playerCards[opt-1].number)
-        del(self.playerCards[opt-1])
+        cardsChoosed = options[opt]
+        options.remove(options[opt])
         print("==========================================")
-        return card
+        return cardsChoosed
         
 
     def showInfo(self):
         print(f'NUM: {self.playerNumber}')
         print(f'PLAYER: {self.name}')
         print(f'SCORE: {self.score}')
-        print(f'CARDS #: {self.savedCards}')
+        print(f'CARDS #: {self.listSavedCards}')
     
     def checkRepeatCards(self):
         listCards = self.playerCards.copy()
@@ -64,4 +72,29 @@ class Player:
             elif count == 4:
                 self.score = 40 
                 print("<< POKER >>")    
-                break           
+                break          
+
+            
+    def generateOptions(self,deskCards):
+        playerCards = self.playerCards.copy()
+        comb = []
+        for card1 in deskCards:
+            for card2 in deskCards:
+                v1 = Card.getValue(card1)
+                v2 = Card.getValue(card2)
+
+                if v1 + v2 <= 7 and  v1 != v2:
+                    nOrdered = [card1,card2]
+                    nOrdered.sort(key = Card.getValue)
+                    if nOrdered not in comb:
+                        comb.append(nOrdered)
+        options = []
+        playerCards.sort(key = Card.getValue)
+        for opt in playerCards:
+            vOpt = Card.getValue(opt)
+            for pairs in comb:
+                v1 = Card.getValue(pairs[0])
+                v2 = Card.getValue(pairs[1]) 
+                if (v1 + v2) == vOpt:
+                    options.append([opt,pairs[0],pairs[1]])
+        return options

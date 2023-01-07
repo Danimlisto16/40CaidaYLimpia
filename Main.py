@@ -169,8 +169,8 @@ while(not thereIsWinner):
             for player in desk.playersList:  
                     
                     desk.playerTurn = player
-                    player.showCards()  
-                    cardChoosen = player.chooseCard()
+                    
+                    cardChoosen = player.chooseCard(desk)
                     desk.event(cardChoosen)
                     #os.system("clear")
                     print("----------------------------------------------------")

@@ -5,11 +5,7 @@ from player import Player
 
 initialCards = [
             #HEARTS
-            Card(ks.HEARTS,"1"),
-            Card(ks.DIAMONDS,"2"),
-            Card(ks.SPADES,"3"),
-            Card(ks.CLUBS,"4"),
-            Card(ks.CLUBS,"5")
+            #
             ]
 
 playerCards = [ 
@@ -110,9 +106,13 @@ print(*options,sep = "\n")
 
 opt = int(input(f'"Which one do you want to take? (1-{len(options)}) : "'))-1
 
+options.remove(options[opt])
+
 isllevada = checkConsecutives(desk,options[opt])
 
 desk.showDeskCards()
-
+print("SAVED CARDS")
 print(player.listSavedCards)
+
+print(options)
 
