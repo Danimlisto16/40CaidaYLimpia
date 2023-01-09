@@ -140,7 +140,7 @@ print("==================================\n\n")
 
 #>>>>>>>>>>> PRINT A LITTLE INTRODUCTION TO THE RULES >>>>>>>>>>>>>>>
 
-for _ in range(1,playerNum+1):
+for _ in range(1, playerNum + 1):
     player = Player(_,input(f"Player {_} write your name: "),0,[],[])    
     desk.playersList.append(player)
 

@@ -25,10 +25,11 @@ class Player:
         
 
     def chooseCard(self, desk): #REFACTOR **************
-        cardChoosed = []
-        options = self.playerCards
+        cardsChoosed = []
+        options = self.playerCards.copy()
         options.extend(self.generateOptions(desk.listCards))
-
+        
+        print("PLAYER OPTS")
         self.showOptions(options)
 
         if len(self.playerCards) == 5:
@@ -36,7 +37,7 @@ class Player:
 
         print("==========================================")
         optLen = len(options)            
-        print(f"\nYou have options(s)\n")
+        print(f"\nYou have {optLen} options(s)\n")
         while(True):
             try:
                 opt = int(input(f"\nPlayer {self.playerNumber})|{self.name}| choose a card (1-{optLen}) : "))
@@ -46,7 +47,10 @@ class Player:
             except:
                 print("value exception, please write a number")
         cardsChoosed = options[opt]
-        options.remove(options[opt])
+        if opt  < len(self.playerCards):
+            self.playerCards.remove(self.playerCards[opt])  
+        else:
+            self.playerCards.remove(cardsChoosed[0])  
         print("==========================================")
         return cardsChoosed
         
@@ -55,9 +59,10 @@ class Player:
         print(f'NUM: {self.playerNumber}')
         print(f'PLAYER: {self.name}')
         print(f'SCORE: {self.score}')
-        print(f'CARDS #: {self.listSavedCards}')
+        print(f'CARDS #: {len(self.listSavedCards)}')
     
     def checkRepeatCards(self):
+
         listCards = self.playerCards.copy()
         for _ in range(1,11):
             count = 0

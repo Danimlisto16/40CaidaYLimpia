@@ -72,6 +72,7 @@ def checkConsecutives(desk,cardsChoosed):
         desk.listCards.remove(card2)
         desk.listCards.remove(card3)
         value1 = Card.getValue(card1) + 1 
+        isLLevada = True
     else:
         card1 = cardsChoosed
         value1 = Card.getValue(card1)
@@ -83,7 +84,6 @@ def checkConsecutives(desk,cardsChoosed):
             desk.playerTurn.listSavedCards.append(c)
             desk.listCards.remove(c)
             value1 += 1
-            isLLevada = True
     return isLLevada
 
 player = Player(1,"JOSE",0,[],[])

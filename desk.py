@@ -35,7 +35,7 @@ class Desk:
         print("||                             ||")
         print("||                             ||")
         print("===============================")    
-        [print(" >"+p.name + " "+ str(p.score) ) for p in self.playersList]
+        [print(" >"+p.name + " "+ str(p.score) + " "+ str(p.listSavedCards) ) for p in self.playersList]
     
     @staticmethod
     def orderCards(cardsList):
@@ -46,7 +46,7 @@ class Desk:
         return []
 
 
-    def checkConsecutives(self,cardsChoosed):
+    def checkConsecutives(self,cardsChoosed):  #REFACTOR
         isLLevada = False
         if type(cardsChoosed) is list:
             card1 = cardsChoosed[0]
@@ -59,7 +59,9 @@ class Desk:
 
             self.listCards.remove(card2)
             self.listCards.remove(card3)
+
             value1 = Card.getValue(card1)+ 1 
+            isLLevada = True
         else:
             value1 = Card.getValue(cardsChoosed)
 
@@ -71,6 +73,10 @@ class Desk:
                 self.listCards.remove(c)
                 value1 += 1
                 isLLevada = True
+        
+        if (type(cardsChoosed) is not list) and isLLevada :
+            self.playerTurn.listSavedCards.append(cardsChoosed)
+                
         return isLLevada
 
     def checkCaida(self,card):
@@ -92,9 +98,9 @@ class Desk:
         
         if isCaida or isLlevada :
             cardsOnDesk = len(self.listCards)
+            self.lastCard = None
             if (cardsOnDesk == 0) and not self.ruleAll2 :
                 print("<||> LIMPIA <||>")
-                self.lastCard = None
                 self.playerTurn.score += 2
                 time.sleep(2)
         else:
